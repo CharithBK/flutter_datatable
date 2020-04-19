@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'DataTable.dart';
 import 'Employee.dart';
 import 'Services.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -17,8 +18,8 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.green,
         title: InkWell(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => new Home()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => new Home()));
             },
             child: Text('ⓉⓇⒺⓃⒹⓈ')),
         actions: <Widget>[],
@@ -28,10 +29,8 @@ class _HomeState extends State<Home> {
           InkWell(
             onTap: () {
               Fluttertoast.showToast(msg: 'Manager');
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => new DataTableDemo()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => new DataTableDemo()));
             },
             child: ListTile(
               title: Text('Profile'),
