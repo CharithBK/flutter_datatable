@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'DataTable.dart';
 import 'Employee.dart';
 import 'Services.dart';
+import 'login.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -30,7 +31,7 @@ class _HomeState extends State<Home> {
             onTap: () {
               Fluttertoast.showToast(msg: 'Manager');
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => new DataTableDemo()));
+                  MaterialPageRoute(builder: (context) => new Login()));
             },
             child: ListTile(
               title: Text('Profile'),

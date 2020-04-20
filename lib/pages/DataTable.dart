@@ -344,15 +344,14 @@ class _DataTableDemoState extends State<DataTableDemo> {
       child: TextField(
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(15.0),
-          hintText: 'Filter by First name or Last name',
+          hintText: 'Find By ID',
         ),
         onChanged: (string) {
           _debouncer.run(() {
             setState(() {
               _filteremployees = _employees
                   .where((u) =>
-                      (u.name.toLowerCase().contains(string.toLowerCase()) ||
-                          u.type.toLowerCase().contains(string.toLowerCase())))
+                      (u.nationalID.toLowerCase().contains(string.toLowerCase())))
                   .toList();
             });
           });
@@ -382,57 +381,58 @@ class _DataTableDemoState extends State<DataTableDemo> {
           )
         ],
       ),
-      body: Container(
+      body: Form(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: TextField(
-                controller: _name,
-                decoration: InputDecoration.collapsed(
-                  hintText: 'Name',
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(20.0),
+                child: TextField(
+                  controller: _name,
+                  decoration: InputDecoration.collapsed(
+                    hintText: 'Name',
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: TextField(
-                controller: _type,
-                decoration: InputDecoration.collapsed(
-                  hintText: 'Type',
+              Padding(
+                padding: EdgeInsets.all(20.0),
+                child: TextField(
+                  controller: _type,
+                  decoration: InputDecoration.collapsed(
+                    hintText: 'Type',
+                  ),
                 ),
               ),
-            ),
-            // Add an update button and a Cancel Button
-            // show these buttons only when updating an employee
-            _isUpdating
-                ? Row(
-                    children: <Widget>[
-                      OutlineButton(
-                        child: Text('UPDATE'),
-                        onPressed: () {
-                          // _updateEmployee(_selectedEmployee);
-                        },
-                      ),
-                      OutlineButton(
-                        child: Text('CANCEL'),
-                        onPressed: () {
-                          setState(() {
-                            _isUpdating = false;
-                          });
-                          _clearValues();
-                        },
-                      ),
-                    ],
-                  )
-                : Container(),
-            searchFeild(),
-            Expanded(
-              child: _dataBody(),
-            ),
-          ],
-        ),
+              // Add an update button and a Cancel Button
+              // show these buttons only when updating an employee
+              _isUpdating
+                  ? Row(
+                      children: <Widget>[
+                        OutlineButton(
+                          child: Text('UPDATE'),
+                          onPressed: () {
+                            // _updateEmployee(_selectedEmployee);
+                          },
+                        ),
+                        OutlineButton(
+                          child: Text('CANCEL'),
+                          onPressed: () {
+                            setState(() {
+                              _isUpdating = false;
+                            });
+                            _clearValues();
+                          },
+                        ),
+                      ],
+                    )
+                  : Container(),
+              searchFeild(),
+              Expanded(
+                child: _dataBody(),
+              ),
+            ],
+          ),
+
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

@@ -31,7 +31,7 @@ class Services {
       //map['action'] = _GET_ALL_ACTION;
       print("ggUpper");
 
-      final response = await http.get('http://192.168.1.10:3000/members');
+      final response = await http.get('http://192.168.1.110:3000/members');
       print("gg");
 
       print('getEmployees Response: ${json.decode(response.body)[12]}');
@@ -57,23 +57,52 @@ class Services {
   }
 
 // Method to add employee to the database...
-//  static Future<String> addEmployee(String firstName, String lastName) async {
-//    try {
-//      var map = Map<String, dynamic>();
-//      map['action'] = _ADD_EMP_ACTION;
-//      map['first_name'] = firstName;
-//      map['last_name'] = lastName;
-//      final response = await http.post(ROOT, body: map);
-//      print('addEmployee Response: ${response.body}');
-//      if (200 == response.statusCode) {
-//        return response.body;
-//      } else {
-//        return "error";
-//      }
-//    } catch (e) {
-//      return "error";
-//    }
-//  }
+  static Future<String> addEmployee(
+      String _nationalid,
+      String _name,
+      String _profession,
+      String _email,
+      String _affiliation,
+      String _type,
+      String _password,
+      String _status) async {
+    try {
+      print(_nationalid);
+      print(_name);
+      print(_profession);
+      print(_email);
+      print(_affiliation);
+      print(_type);
+      print(_password);
+      print(_status);
+      var map = Map<String, dynamic>();
+      //map['action'] = _ADD_EMP_ACTION;
+
+      print("ggmap");
+      map["nationalid"] = _nationalid;
+      map["name"] = _name;
+      map["profession"] = _profession;
+      map["email"] = _email;
+      map["affiliation"] = _affiliation;
+      map["type"] = _type;
+      map["password"] = _password;
+      map["status"] = _status;
+      final data = json.encode(map);
+      //String json2 = '{"nationalid":"1020","name":"Oshan2","profession":"Administrator ","email":"niluminda5@gmail.com","affiliation":"ICT","type":"Manager","password":"1234","status":"1"}';
+      print(data);
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.post('http://192.168.1.110:3000/members',headers: headers, body: data);
+      print("data_Ok");
+      print('addEmployee Response: ${response.body}');
+      if (200 == response.statusCode) {
+        return response.body;
+      } else {
+        return "error";
+      }
+    } catch (e) {
+      return "error";
+    }
+  }
 
 // Method to update an Employee in Database...
 //  static Future<String> updateEmployee(
