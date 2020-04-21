@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'DataTable.dart';
-import 'Employee.dart';
+import 'Manager_Profile.dart';
+import 'Member_Management.dart';
+import 'Members.dart';
 import 'Services.dart';
-import 'login.dart';
+import 'Login.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class _HomeState extends State<Home> {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => new Home()));
             },
-            child: Text('ⓉⓇⒺⓃⒹⓈ')),
+            child: Text('Student Industry Portal System')),
         actions: <Widget>[],
       ),
       body: new ListView(
@@ -31,10 +32,37 @@ class _HomeState extends State<Home> {
             onTap: () {
               Fluttertoast.showToast(msg: 'Manager');
               Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => new Manager_Profile()));
+            },
+            child: ListTile(
+              title: Text('Manager'),
+              leading: Icon(
+                Icons.people,
+                color: Colors.green,
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Fluttertoast.showToast(msg: 'Expert');
+              Navigator.push(context,
                   MaterialPageRoute(builder: (context) => new Login()));
             },
             child: ListTile(
-              title: Text('Profile'),
+              title: Text('Expert'),
+              leading: Icon(
+                Icons.people,
+                color: Colors.green,
+              ),
+            ),
+          ),    InkWell(
+            onTap: () {
+              Fluttertoast.showToast(msg: 'Student');
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => new Login()));
+            },
+            child: ListTile(
+              title: Text('Student'),
               leading: Icon(
                 Icons.people,
                 color: Colors.green,

@@ -5,14 +5,17 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'Employee.dart';
+import 'Manager_Profile.dart';
+import 'Members.dart';
 import 'Services.dart';
 
-class DataTableDemo extends StatefulWidget {
-  final String title = "Member Details";
+
+// ignore: camel_case_types
+class Member_Management extends StatefulWidget {
+  final String title = "Member Management";
 
   @override
-  _DataTableDemoState createState() => _DataTableDemoState();
+  _Member_ManagementState createState() => _Member_ManagementState();
 }
 
 class Debouncer {
@@ -30,7 +33,7 @@ class Debouncer {
   }
 }
 
-class _DataTableDemoState extends State<DataTableDemo> {
+class _Member_ManagementState extends State<Member_Management> {
   List<Employee> _employees;
   List<Employee> _filteremployees;
   GlobalKey<ScaffoldState> _scaffoldKey;
@@ -114,12 +117,12 @@ class _DataTableDemoState extends State<DataTableDemo> {
 //  }
 
   _getEmployees() {
-    _showProgress('Loading Employees...');
+    _showProgress('Loading Members...');
     Services.getEmployees().then((employees) {
       setState(() {
         _employees = employees;
 
-       _filteremployees = employees;
+        _filteremployees = employees;
       });
       _showProgress(widget.title); // Reset the title...
       print("Length ${employees.length}");
@@ -186,34 +189,72 @@ class _DataTableDemoState extends State<DataTableDemo> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
+
           columns: [
+
             DataColumn(
-              label: Text('NationalID'),
+              label: Text('NationalID',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                  )),
             ),
             DataColumn(
-              label: Text('Name'),
+              label: Text('Name',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                  )),
             ),
             DataColumn(
-              label: Text('Profession'),
+              label: Text('Profession',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                  )),
             ),
             // Lets add one more column to show a delete button
             DataColumn(
-              label: Text('Email'),
+              label: Text('Email',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                  )),
             ),
             DataColumn(
-              label: Text('Affiliation'),
+              label: Text('Affiliation',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                  )),
             ),
             DataColumn(
-              label: Text('Type'),
+              label: Text('Type',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                  )),
             ),
             DataColumn(
-              label: Text('Password'),
+              label: Text('Password',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                  )),
             ),
             DataColumn(
-              label: Text('Status'),
+              label: Text('Status',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                  )),
             ),
             DataColumn(
-              label: Text('DELETE'),
+              label: Text('Delete',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                  )),
             ),
           ],
           rows: _filteremployees
@@ -325,7 +366,10 @@ class _DataTableDemoState extends State<DataTableDemo> {
                     },
                   ),
                   DataCell(IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: Icon(Icons.delete,
+                      color: Colors.red,
+                    ),
+
                     onPressed: () {
                       //_deleteEmployee(employee);
                     },
@@ -343,15 +387,13 @@ class _DataTableDemoState extends State<DataTableDemo> {
       padding: EdgeInsets.all(20.0),
       child: TextField(
         decoration: InputDecoration(
+          icon: Icon(Icons.search),
           contentPadding: EdgeInsets.all(15.0),
-          hintText: 'Find By ID',
+          hintText: 'Search',
         ),
         onChanged: (string) {
           _debouncer.run(() {
-            setState(() {
-              _filteremployees = _employees
-                  .where((u) =>
-                      (u.nationalID.toLowerCase().contains(string.toLowerCase())))
+            setState(() {_filteremployees = _employees.where((u) => (u.nationalID.toLowerCase().contains(string.toLowerCase())) || (u.name.toLowerCase().contains(string.toLowerCase()))|| (u.profession.toLowerCase().contains(string.toLowerCase()))||(u.email.toLowerCase().contains(string.toLowerCase()))||(u.affiliation.toLowerCase().contains(string.toLowerCase()))||(u.type.toLowerCase().contains(string.toLowerCase()))||(u.password.toLowerCase().contains(string.toLowerCase()))||(u.status.toLowerCase().contains(string.toLowerCase())))
                   .toList();
             });
           });
@@ -365,12 +407,15 @@ class _DataTableDemoState extends State<DataTableDemo> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        backgroundColor: Colors.green,
         title: Text(_titleProgress), // we show the progress in the title...
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.account_circle),
             onPressed: () {
-              // _createTable();
+              Fluttertoast.showToast(msg: 'Manager Profile');
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => new Manager_Profile()));
             },
           ),
           IconButton(
@@ -382,27 +427,29 @@ class _DataTableDemoState extends State<DataTableDemo> {
         ],
       ),
       body: Form(
-        child: Column(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(20.0),
-                child: TextField(
-                  controller: _name,
-                  decoration: InputDecoration.collapsed(
-                    hintText: 'Name',
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(20.0),
-                child: TextField(
-                  controller: _type,
-                  decoration: InputDecoration.collapsed(
-                    hintText: 'Type',
-                  ),
-                ),
-              ),
+//              Padding(
+//                padding: EdgeInsets.all(20.0),
+//                child: TextField(
+//                  controller: _name,
+//                  decoration: InputDecoration.collapsed(
+//                    hintText: 'Name',
+//                  ),
+//                ),
+//              ),
+//              Padding(
+//                padding: EdgeInsets.all(20.0),
+//                child: TextField(
+//                  controller: _type,
+//                  decoration: InputDecoration.collapsed(
+//                    hintText: 'Type',
+//                  ),
+//                ),
+//              ),
               // Add an update button and a Cancel Button
               // show these buttons only when updating an employee
               _isUpdating
@@ -432,14 +479,14 @@ class _DataTableDemoState extends State<DataTableDemo> {
               ),
             ],
           ),
-
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //  _addEmployee();
-        },
-        child: Icon(Icons.add),
-      ),
+//      floatingActionButton: FloatingActionButton(
+//        onPressed: () {
+//          //  _addEmployee();
+//        },
+//        child: Icon(Icons.add),
+//      ),
     );
   }
 }

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutterdatatable/pages/Home.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'Services.dart';
-import 'home.dart';
+import 'Login.dart';
+import 'Member_Management.dart';
 
-class Registration extends StatefulWidget {
+class Manager_Profile extends StatefulWidget {
   @override
-  _RegistrationState createState() => _RegistrationState();
+  _Manager_ProfileState createState() => _Manager_ProfileState();
 }
 
-class _RegistrationState extends State<Registration> {
+class _Manager_ProfileState extends State<Manager_Profile> {
   bool _isEnabled = false;
-  String dropdownType;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController nationalIdController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -19,9 +19,7 @@ class _RegistrationState extends State<Registration> {
   TextEditingController emailController = TextEditingController();
   TextEditingController affiliationController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController statusController = TextEditingController();
   TextEditingController cpasswordController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +32,28 @@ class _RegistrationState extends State<Registration> {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => new Home()));
             },
-            child: Text('ⓉⓇⒺⓃⒹⓈ')),
+            child: Text('MANAGER')),
         actions: <Widget>[
           new IconButton(
               icon: Icon(
-                Icons.home,
+                Icons.people,
                 color: Colors.white,
               ),
-              onPressed: () {}),
-
+              onPressed: () {
+                Fluttertoast.showToast(msg: 'Member Management');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => new Member_Management()));
+              }),
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () {
+              Fluttertoast.showToast(msg: 'Logout');
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => new Login()));
+            },
+          ),
         ],
       ),
       body: Form(
@@ -55,20 +66,21 @@ class _RegistrationState extends State<Registration> {
                 Padding(
                   padding: EdgeInsets.all(5.0),
                   child: new Text(
-                    "M E M B E R      R E G I S T R A T I O N",
+                    "U S E R      P R O F I L E",
                   ),
                 ),
                 SizedBox(height: 45.0),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: TextFormField(
+                    enabled: false,
                     controller: nationalIdController,
                     decoration:
-                        InputDecoration(labelText: 'National ID ', hintText: 'Id'),
+                        InputDecoration(labelText: 'User ID ', hintText: 'Id'),
                     // ignore: missing_return
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'National Id Empty *';
+                        return 'User Id Empty';
                       }
                     },
                   ),
@@ -78,13 +90,13 @@ class _RegistrationState extends State<Registration> {
                   padding: const EdgeInsets.all(12.0),
                   child: TextFormField(
                     controller: nameController,
-
+                    enabled: _isEnabled,
                     decoration: InputDecoration(
-                        labelText: 'Member Name ', hintText: 'name'),
+                        labelText: 'Name ', hintText: 'name'),
                     // ignore: missing_return
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Member Name Is Empty *';
+                        return 'Name Is Empty *';
                       }
                     },
                   ),
@@ -93,6 +105,7 @@ class _RegistrationState extends State<Registration> {
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: TextFormField(
+                    enabled: _isEnabled,
                     controller: professionController,
 
                     decoration: InputDecoration(
@@ -100,7 +113,7 @@ class _RegistrationState extends State<Registration> {
                     // ignore: missing_return
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Profession Name Is Empty *';
+                        return 'Profession Is Empty *';
                       }
                     },
                   ),
@@ -109,6 +122,7 @@ class _RegistrationState extends State<Registration> {
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: TextFormField(
+                    enabled: _isEnabled,
                     controller: emailController,
 
                     decoration: InputDecoration(
@@ -121,12 +135,11 @@ class _RegistrationState extends State<Registration> {
                     },
                   ),
                 ),
-                SizedBox(height: 5.0),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: TextFormField(
+                    enabled: _isEnabled,
                     controller: affiliationController,
-
                     decoration: InputDecoration(
                         labelText: 'Affiliation ', hintText: 'affiliation'),
                     // ignore: missing_return
@@ -137,27 +150,26 @@ class _RegistrationState extends State<Registration> {
                     },
                   ),
                 ),
-                SizedBox(height: 5.0),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: TextFormField(
-                    controller: passwordController,
+                    enabled: _isEnabled,
                     obscureText: true,
-
+                    controller: passwordController,
                     decoration: InputDecoration(
                         labelText: 'Password ', hintText: 'password'),
                     // ignore: missing_return
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Password Is Empty *';
+                        return 'Password Empty *';
                       }
                     },
                   ),
                 ),
-                SizedBox(height: 5.0),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: TextFormField(
+                    enabled: _isEnabled,
                     obscureText: true,
                     controller: cpasswordController,
                     decoration: InputDecoration(
@@ -165,69 +177,13 @@ class _RegistrationState extends State<Registration> {
                     // ignore: missing_return
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'Confirm Password Is Empty *';
-                      }
-                    },
-                  ),
-                ),
-                SizedBox(height: 5.0),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: TextFormField(
-
-                    controller: statusController,
-                    decoration: InputDecoration(
-                        labelText: 'Status ', hintText: 'true or false'),
-                    // ignore: missing_return
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Status Is Empty *';
+                        return 'Confirm Password Empty *';
                       }
                     },
                   ),
                 ),
                 SizedBox(height: 10.0),
-                new Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(12.0, 5.0, 5.0, 5.0),
-                      child: new Text("Type :",
-                          style: TextStyle(color: Colors.grey)),
-                    ),
-                    DropdownButton<String>(
-                      value: dropdownType,
-                      hint: Text("Select Type"),
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 16,
-                      elevation: 16,
-                      style: TextStyle(color: Colors.black),
-                      underline: Container(
-                        height: 4,
-                        color: Colors.lightGreen,
-                      ),
-                      onChanged: (String newValue) {
-
-                          setState(() {
-                            dropdownType = newValue;
-                            print(dropdownType);
-                            //print(dropdownBrands);
-                          });
-
-                        return dropdownType;
-                      },
-                      items: <String>[
-                        'Manager',
-                        'Expert',
-                        'Student',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
+                SizedBox(height: 5.0),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -239,23 +195,44 @@ class _RegistrationState extends State<Registration> {
                       child: new MaterialButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            if (dropdownType != null) {
-                              print("Save");
-                              SaveUserDattails();
-                              Fluttertoast.showToast(msg: 'Details Saved');
-                            } else {
-                              Fluttertoast.showToast(msg: 'Select the type');
-                            }
+                            print("Save");
+                            SaveUserDattails();
+                            Fluttertoast.showToast(msg: 'Details Saved');
                           }
                         },
                         child: new Text(
-                          "Save",
+                          "Update Profile",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        color: Colors.green,
+                      ),
+                    ),
+                    SizedBox(width: 35.0),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: new MaterialButton(
+                        onPressed: () {
+                          setState(() {
+                            _isEnabled = !_isEnabled;
+                            if (_isEnabled == true) {
+                              Fluttertoast.showToast(msg: 'Edit On');
+                            } else {
+                              Fluttertoast.showToast(msg: 'Edit Off');
+                            }
+                          });
+                        },
+//                        () {
+//
+//                          Fluttertoast.showToast(msg: 'You can edit details');
+//                          print("Edit");
+//                        },
+                        child: new Text(
+                          "Edit Mode",
                           style: TextStyle(color: Colors.white),
                         ),
                         color: Colors.red,
                       ),
                     ),
-
                   ],
                 ),
               ],
@@ -266,12 +243,5 @@ class _RegistrationState extends State<Registration> {
     );
   }
 
-  void SaveUserDattails() {
-
-
-    Services.addEmployee(nationalIdController.text, nameController.text,professionController.text,emailController.text,affiliationController.text,dropdownType,passwordController.text,statusController.text)
-        .then((result) {
-      Fluttertoast.showToast(msg: 'OK DB data passed');
-    });
-  }
+  void SaveUserDattails() {}
 }

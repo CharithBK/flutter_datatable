@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterdatatable/pages/registration.dart';
+import 'package:flutterdatatable/pages/Registration.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class Login extends StatefulWidget {
@@ -41,7 +41,7 @@ class _LoginState extends State<Login> {
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
+      color: Colors.green,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -59,7 +59,7 @@ class _LoginState extends State<Login> {
     final RegistrationButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
+      color: Colors.green,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -86,8 +86,15 @@ class _LoginState extends State<Login> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  Text ("Student Industry Portal System" ,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 23.5,
 
-                  SizedBox(height: 45.0),
+                        fontWeight: FontWeight.bold
+
+                      )),
+                  SizedBox(height:85.0),
                   username,
                   SizedBox(height: 25.0),
                   passwordField,
