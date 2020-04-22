@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'Add_Category.dart';
 import 'Categories.dart';
-import 'Manager_Profile.dart';
-import 'Members.dart';
 import 'Services.dart';
 
 
@@ -161,7 +159,6 @@ class _Category_ManagementState extends State<Category_Management> {
 
   _showValues(Category category) {
     _categoryID.text = category.categoryID;
-
     _categoryName.text = category.category;
     _proLanguages.text = category.qualifications_Languages;
     _proIDEs.text = category.qualifications_IDEs;

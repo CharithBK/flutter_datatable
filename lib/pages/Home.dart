@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'Expert_Profile.dart';
 import 'Manager_Profile.dart';
 import 'Member_Management.dart';
 import 'Members.dart';
@@ -47,7 +48,7 @@ class _HomeState extends State<Home> {
             onTap: () {
               Fluttertoast.showToast(msg: 'Expert');
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => new Login()));
+                  MaterialPageRoute(builder: (context) => new Expert_Profile()));
             },
             child: ListTile(
               title: Text('Expert'),

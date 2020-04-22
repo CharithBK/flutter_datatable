@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'Categories.dart';
 import 'Members.dart';
+import 'Students.dart';
 
 class Services {
 
@@ -14,7 +15,7 @@ class Services {
       final response = await http.get('http://192.168.1.110:3000/members');
       print("gg");
 
-      print('getMembers Response: ${json.decode(response.body)[12]}');
+      print('getMembers Response: ${json.decode(response.body)}');
       if (200 == response.statusCode) {
         print("gglist");
         List<Member> list = parseResponse(response.body);
@@ -53,6 +54,30 @@ class Services {
     }
   }
 
+  static Future<List<Student>> getStudents() async {
+    try {
+      var map = Map<String, dynamic>();
+      //map['action'] = _GET_ALL_ACTION;
+      print("student ok1");
+
+      final response = await http.get('http://192.168.1.110:3000/category/member/category');
+      print("gg");
+
+      print('getStudent Response: ${json.decode(response.body)[2]}');
+      if (200 == response.statusCode) {
+        print("gglist");
+        List<Student> list = parseResponse2(response.body);
+        //print(parseResponse(response.body));
+        //print ("response.body");
+        return list;
+      } else {
+        return List<Student>();
+      }
+    } catch (e) {
+      return List<Student>(); // return an empty list on exception/error
+    }
+  }
+
   static List<Member> parseResponse(String responseBody) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
     //print(parsed);
@@ -65,6 +90,12 @@ class Services {
     //print(parsed);
     print(parsed.map<Category>((json) => Category.fromJson(json)).toList());
     return parsed.map<Category>((json) => Category.fromJson(json)).toList();
+  }
+  static List<Student> parseResponse2(String responseBody) {
+    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+    //print(parsed);
+    print(parsed.map<Student>((json) => Student.fromJson(json)).toList());
+    return parsed.map<Student>((json) => Student.fromJson(json)).toList();
   }
 
 // Method to add employee to the database...
@@ -137,21 +168,21 @@ class Services {
 //  }
 //
 //  // Method to Delete an Employee from Database...
-//  static Future<String> deleteEmployee(String empId) async {
-//    try {
-//      var map = Map<String, dynamic>();
-//      map['action'] = _DELETE_EMP_ACTION;
-//      map['emp_id'] = empId;
-//      final response = await http.post(ROOT, body: map);
-//      print('deleteEmployee Response: ${response.body}');
-//      if (200 == response.statusCode) {
-//        return response.body;
-//      } else {
-//        return "error";
-//      }
-//    } catch (e) {
-//      return "error"; // returning just an "error" string to keep this simple...
-//    }
-//  }
+  static Future<String> deleteMember(String nationalId) async {
+    try {
+      print("delete_Ok1");
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.delete('http://192.168.1.110:3000/members/$nationalId', headers: headers);
+      print("delete_Ok1");
+      print('deleteMember Response: ${response.body}');
+      if (200 == response.statusCode) {
+        return response.body;
+      } else {
+        return "error";
+      }
+    } catch (e) {
+      return "error"; // returning just an "error" string to keep this simple...
+    }
+  }
 
 }

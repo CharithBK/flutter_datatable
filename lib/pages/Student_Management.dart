@@ -1,22 +1,22 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:core';
-import 'dart:core';
 import 'dart:core';
 
+
 import 'package:flutter/material.dart';
+import 'package:flutterdatatable/pages/Students.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'Manager_Profile.dart';
-import 'Members.dart';
+import 'Add_Category.dart';
+import 'Categories.dart';
+import 'Expert_Profile.dart';
 import 'Services.dart';
 
 
 // ignore: camel_case_types
-class Member_Management extends StatefulWidget {
-  final String title = "MANAGER";
+class Student_Management extends StatefulWidget {
+  final String title = "INDUSTRY EXPERTS";
 
   @override
-  _Member_ManagementState createState() => _Member_ManagementState();
+  _Student_ManagementState createState() => _Student_ManagementState();
 }
 
 class Debouncer {
@@ -34,23 +34,22 @@ class Debouncer {
   }
 }
 
-class _Member_ManagementState extends State<Member_Management> {
-  List<Member> _members;
-  List<Member> _filtermembers;
+class _Student_ManagementState extends State<Student_Management> {
+  List<Student> _students;
+  List<Student> _filterstudents;
   GlobalKey<ScaffoldState> _scaffoldKey;
 
   // controller for the First Name TextField we are going to create.
+  TextEditingController _category;
   TextEditingController _nationalID;
-
-  // controller for the Last Name TextField we are going to create.
   TextEditingController _name;
   TextEditingController _profession;
   TextEditingController _email;
   TextEditingController _affiliation;
-  TextEditingController _type;
-  TextEditingController _password;
-  TextEditingController _status;
-  Member _selectedMember;
+  TextEditingController _qualifications_languages;
+  TextEditingController _qualifications_IDEs;
+
+  Student _selectedStudent;
   bool _isUpdating;
   String _titleProgress;
   final _debouncer = Debouncer(milliseconds: 2000);
@@ -58,21 +57,21 @@ class _Member_ManagementState extends State<Member_Management> {
   @override
   void initState() {
     super.initState();
-    _members = [];
-    _filtermembers = [];
+    _students = [];
+    _filterstudents = [];
     _isUpdating = false;
     _titleProgress = widget.title;
     _scaffoldKey = GlobalKey(); // key to get the context to show a SnackBar
 
+    _category = TextEditingController();
     _nationalID = TextEditingController();
     _name = TextEditingController();
     _profession = TextEditingController();
     _email = TextEditingController();
     _affiliation = TextEditingController();
-    _type = TextEditingController();
-    _password = TextEditingController();
-    _status = TextEditingController();
-    _getMembers();
+    _qualifications_languages = TextEditingController();
+    _qualifications_IDEs = TextEditingController();
+    _getStudents();
   }
 
   // Method to update title in the AppBar Title
@@ -117,16 +116,16 @@ class _Member_ManagementState extends State<Member_Management> {
 //    });
 //  }
 
-  _getMembers() {
-    _showProgress('Loading Members...');
-    Services.getMembers().then((members) {
+  _getStudents() {
+    _showProgress('Loading Details...');
+    Services.getStudents().then((student) {
       setState(() {
-        _members = members;
+        _students = student;
 
-        _filtermembers = members;
+        _filterstudents = student;
       });
       _showProgress(widget.title); // Reset the title...
-      print("Length ${members.length}");
+      print("Length ${student.length}");
     });
   }
 
@@ -148,41 +147,37 @@ class _Member_ManagementState extends State<Member_Management> {
 //    });
 //  }
 //
-  _deleteMember(Member member) {
-    _showProgress('Deleting Member...');
-    Services.deleteMember(member.nationalID).then((result) {
-      print("delete done");
-      final msg = json.decode(result)["message"];
-      print(msg);
-      if ('Member was deleted successfully!' == msg) {
-        _getMembers(); // Refresh after delete...
-      }
-      print("delete done2");
-    });
-  }
+//  _deleteEmployee(Employee employee) {
+//    _showProgress('Deleting Employee...');
+//    Services.deleteEmployee(employee.id).then((result) {
+//      if ('success' == result) {
+//        _getEmployees(); // Refresh after delete...
+//      }
+//    });
+//  }
 
   // Method to clear TextField values
   _clearValues() {
+    _category.text = '';
     _nationalID.text = '';
     _name.text = '';
     _profession.text = '';
     _email.text = '';
     _affiliation.text = '';
-    _type.text = '';
-    _password.text = '';
-    _status.text = '';
+    _qualifications_languages.text = '';
+    _qualifications_IDEs.text = '';
   }
 
-  _showValues(Member members) {
-    _nationalID.text = members.nationalID;
+  _showValues(Student student) {
+    _category.text = student.category;
+    _nationalID.text = student.nationalID;
+    _name.text = student.name;
+    _profession.text = student.profession;
+    _category.text = student.email;
+    _nationalID.text = student.affiliation;
+    _name.text = student.qualifications_Languages;
+    _profession.text = student.qualifications_IDEs;
 
-    _name.text = members.name;
-    _profession.text = members.profession;
-    _email.text = members.email;
-    _affiliation.text = members.affiliation;
-    _type.text = members.type;
-    _password.text = members.password;
-    _status.text = members.status;
   }
 
   // Let's create a DataTable and show the employee list in it.
@@ -198,7 +193,14 @@ class _Member_ManagementState extends State<Member_Management> {
           columns: [
 
             DataColumn(
-              label: Text('NationalID',
+              label: Text('Category ',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.0,
+                  )),
+            ),
+            DataColumn(
+              label: Text('National ID',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16.0,
@@ -211,6 +213,7 @@ class _Member_ManagementState extends State<Member_Management> {
                     fontSize: 16.0,
                   )),
             ),
+            // Lets add one more column to show a delete button
             DataColumn(
               label: Text('Profession',
                   style: TextStyle(
@@ -218,7 +221,6 @@ class _Member_ManagementState extends State<Member_Management> {
                     fontSize: 16.0,
                   )),
             ),
-            // Lets add one more column to show a delete button
             DataColumn(
               label: Text('Email',
                   style: TextStyle(
@@ -234,21 +236,15 @@ class _Member_ManagementState extends State<Member_Management> {
                   )),
             ),
             DataColumn(
-              label: Text('Type',
+              label: Text('Qualifications Languages',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16.0,
                   )),
             ),
+            // Lets add one more column to show a delete button
             DataColumn(
-              label: Text('Password',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16.0,
-                  )),
-            ),
-            DataColumn(
-              label: Text('Status',
+              label: Text('Qualifications IDEs',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16.0,
@@ -262,17 +258,70 @@ class _Member_ManagementState extends State<Member_Management> {
                   )),
             ),
           ],
-          rows: _filtermembers
+          rows: _filterstudents
               .map(
-                (member) => DataRow(cells: [
+                (student) => DataRow(cells: [
+              DataCell(
+                Text(student.category),
+                // Add tap in the row and populate the
+                // textfields with the corresponding values to update
+                onTap: () {
+                  _showValues(student);
+                  // Set the Selected employee to Update
+                  _selectedStudent = student;
+                  setState(() {
+                    _isUpdating = true;
+                  });
+                },
+              ),
+              DataCell(
+                Text(
+                  student.nationalID.toUpperCase(),
+                ),
+                onTap: () {
+                  _showValues(student);
+                  // Set the Selected employee to Update
+                  _selectedStudent = student;
+                  // Set flag updating to true to indicate in Update Mode
+                  setState(() {
+                    _isUpdating = true;
+                  });
+                },
+              ),
+              DataCell(
+                Text(
+                  student.name.toUpperCase(),
+                ),
+                onTap: () {
+                  _showValues(student);
+                  // Set the Selected employee to Update
+                  _selectedStudent = student;
+                  setState(() {
+                    _isUpdating = true;
+                  });
+                },
+              ),
+              DataCell(
+                Text(
+                  student.profession.toUpperCase(),
+                ),
+                onTap: () {
+                  _showValues(student);
+                  // Set the Selected employee to Update
+                  _selectedStudent = student;
+                  setState(() {
+                    _isUpdating = true;
+                  });
+                },
+              ),
                   DataCell(
-                    Text(member.nationalID),
+                    Text(student.email.toUpperCase()),
                     // Add tap in the row and populate the
                     // textfields with the corresponding values to update
                     onTap: () {
-                      _showValues(member);
+                      _showValues(student);
                       // Set the Selected employee to Update
-                      _selectedMember = member;
+                      _selectedStudent = student;
                       setState(() {
                         _isUpdating = true;
                       });
@@ -280,12 +329,12 @@ class _Member_ManagementState extends State<Member_Management> {
                   ),
                   DataCell(
                     Text(
-                      member.name.toUpperCase(),
+                      student.affiliation.toUpperCase(),
                     ),
                     onTap: () {
-                      _showValues(member);
+                      _showValues(student);
                       // Set the Selected employee to Update
-                      _selectedMember = member;
+                      _selectedStudent = student;
                       // Set flag updating to true to indicate in Update Mode
                       setState(() {
                         _isUpdating = true;
@@ -294,12 +343,12 @@ class _Member_ManagementState extends State<Member_Management> {
                   ),
                   DataCell(
                     Text(
-                      member.profession.toUpperCase(),
+                      student.qualifications_Languages.toUpperCase(),
                     ),
                     onTap: () {
-                      _showValues(member);
+                      _showValues(student);
                       // Set the Selected employee to Update
-                      _selectedMember = member;
+                      _selectedStudent = student;
                       setState(() {
                         _isUpdating = true;
                       });
@@ -307,81 +356,28 @@ class _Member_ManagementState extends State<Member_Management> {
                   ),
                   DataCell(
                     Text(
-                      member.email.toUpperCase(),
+                      student.qualifications_IDEs.toUpperCase(),
                     ),
                     onTap: () {
-                      _showValues(member);
+                      _showValues(student);
                       // Set the Selected employee to Update
-                      _selectedMember = member;
+                      _selectedStudent = student;
                       setState(() {
                         _isUpdating = true;
                       });
                     },
                   ),
-                  DataCell(
-                    Text(
-                      member.affiliation.toUpperCase(),
-                    ),
-                    onTap: () {
-                      _showValues(member);
-                      // Set the Selected employee to Update
-                      _selectedMember = member;
-                      setState(() {
-                        _isUpdating = true;
-                      });
-                    },
-                  ),
-                  DataCell(
-                    Text(
-                      member.type.toUpperCase(),
-                    ),
-                    onTap: () {
-                      _showValues(member);
-                      // Set the Selected employee to Update
-                      _selectedMember = member;
-                      setState(() {
-                        _isUpdating = true;
-                      });
-                    },
-                  ),
-                  DataCell(
-                    Text(
-                      member.password.toUpperCase(),
-                    ),
-                    onTap: () {
-                      _showValues(member);
-                      // Set the Selected employee to Update
-                      _selectedMember = member;
-                      setState(() {
-                        _isUpdating = true;
-                      });
-                    },
-                  ),
-                  DataCell(
-                    Text(
-                      member.status.toUpperCase(),
-                    ),
-                    onTap: () {
-                      _showValues(member);
-                      // Set the Selected employee to Update
-                      _selectedMember = member;
-                      setState(() {
-                        _isUpdating = true;
-                      });
-                    },
-                  ),
-                  DataCell(IconButton(
-                    icon: Icon(Icons.delete,
-                      color: Colors.red,
-                    ),
+              DataCell(IconButton(
+                icon: Icon(Icons.delete,
+                  color: Colors.red,
+                ),
 
-                    onPressed: () {
-                      Fluttertoast.showToast(msg: 'Member Deleted');
-                      _deleteMember(member);
-                    },
-                  ))
-                ]),
-              )
+                onPressed: () {
+                  //_deleteEmployee(employee);
+                },
+              ))
+            ]),
+          )
               .toList(),
         ),
       ),
@@ -395,12 +391,12 @@ class _Member_ManagementState extends State<Member_Management> {
         decoration: InputDecoration(
           icon: Icon(Icons.search),
           contentPadding: EdgeInsets.all(15.0),
-          hintText: 'Search',
+          hintText: 'Search by Category',
         ),
         onChanged: (string) {
           _debouncer.run(() {
-            setState(() {_filtermembers = _members.where((u) => (u.nationalID.toLowerCase().contains(string.toLowerCase())) || (u.name.toLowerCase().contains(string.toLowerCase()))|| (u.profession.toLowerCase().contains(string.toLowerCase()))||(u.email.toLowerCase().contains(string.toLowerCase()))||(u.affiliation.toLowerCase().contains(string.toLowerCase()))||(u.type.toLowerCase().contains(string.toLowerCase()))||(u.password.toLowerCase().contains(string.toLowerCase()))||(u.status.toLowerCase().contains(string.toLowerCase())))
-                  .toList();
+            setState(() {_filterstudents = _students.where((u) => (u.category.toLowerCase().contains(string.toLowerCase())))
+                .toList();
             });
           });
         },
@@ -416,18 +412,20 @@ class _Member_ManagementState extends State<Member_Management> {
         backgroundColor: Colors.green,
         title: Text(_titleProgress), // we show the progress in the title...
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: () {
-              Fluttertoast.showToast(msg: 'Manager Profile');
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => new Manager_Profile()));
-            },
-          ),
+          new IconButton(
+              icon: Icon(
+                Icons.account_circle,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Fluttertoast.showToast(msg: 'Expert Profile');
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => new Expert_Profile()));
+              }),
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              _getMembers();
+              _getStudents();
             },
           )
         ],
@@ -438,27 +436,6 @@ class _Member_ManagementState extends State<Member_Management> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              _isUpdating
-                  ? Row(
-                      children: <Widget>[
-                        OutlineButton(
-                          child: Text('UPDATE'),
-                          onPressed: () {
-                            // _updateEmployee(_selectedEmployee);
-                          },
-                        ),
-                        OutlineButton(
-                          child: Text('CANCEL'),
-                          onPressed: () {
-                            setState(() {
-                              _isUpdating = false;
-                            });
-                            _clearValues();
-                          },
-                        ),
-                      ],
-                    )
-                  : Container(),
               searchFeild(),
               Expanded(
                 child: _dataBody(),

@@ -149,11 +149,11 @@ class _Add_CategoryState extends State<Add_Category> {
                           if (_formKey.currentState.validate()) {
                             print("Save");
                             SaveUserDattails();
-                            Fluttertoast.showToast(msg: 'Details Saved');
+                            Fluttertoast.showToast(msg: 'Category Added');
                           }
                         },
                         child: new Text(
-                          "Update Profile",
+                          "Add Category",
                           style: TextStyle(color: Colors.white),
                         ),
                         color: Colors.green,
