@@ -7,9 +7,7 @@ import 'Students.dart';
 class Services {
   static Future<List<Member>> getMembers() async {
     try {
-      var map = Map<String, dynamic>();
       final response = await http.get('http://192.168.1.110:3000/members');
-      // print('getMembers Response: ${json.decode(response.body)}');
       if (200 == response.statusCode) {
         List<Member> list = parseResponse(response.body);
         return list;
@@ -23,12 +21,9 @@ class Services {
 
   static Future<List<Category>> getCategory() async {
     try {
-      var map = Map<String, dynamic>();
       final response = await http.get('http://192.168.1.110:3000/category');
       if (200 == response.statusCode) {
         List<Category> list = parseResponse1(response.body);
-        //print(parseResponse(response.body));
-        //print ("response.body");
         return list;
       } else {
         return List<Category>();
@@ -42,12 +37,9 @@ class Services {
     try {
       final response =
           await http.get('http://192.168.1.110:3000/category/member/category');
-
-      print('getStudent Response: ${json.decode(response.body)}');
       if (200 == response.statusCode) {
         List<Student> list = parseResponse2(response.body);
-        //print(parseResponse(response.body));
-        //print ("response.body");
+
         return list;
       } else {
         return List<Student>();
@@ -104,7 +96,37 @@ class Services {
       final response = await http.post('http://192.168.1.110:3000/members',
           headers: headers, body: data);
       print("data_Ok");
-      print('addEmployee Response: ${response.body}');
+      print('addMember Response: ${response.body}');
+      if (200 == response.statusCode) {
+        return response.body;
+      } else {
+        return "error";
+      }
+    } catch (e) {
+      return "error";
+    }
+  }
+
+  static Future<String> addCategory(
+    String _nationalid,
+    String _categoryid,
+    String _category,
+    String _qualifications_languages,
+    String _qualifications_IDEs,
+  ) async {
+    try {
+      var map = Map<String, dynamic>();
+      map["nationalid"] = _nationalid;
+      map["name"] = _categoryid;
+      map["profession"] = _category;
+      map["email"] = _qualifications_languages;
+      map["affiliation"] = _qualifications_IDEs;
+      final data = json.encode(map);
+      // print(data);
+      Map<String, String> headers = {"Content-type": "application/json"};
+      final response = await http.post('http://192.168.1.110:3000/category',
+          headers: headers, body: data);
+
       if (200 == response.statusCode) {
         return response.body;
       } else {
@@ -217,13 +239,10 @@ class Services {
 
   static Future<String> deleteCategory(String nationalId) async {
     try {
-      print("delete_Ok1");
       Map<String, String> headers = {"Content-type": "application/json"};
       final response = await http.delete(
           'http://192.168.1.110:3000/category/$nationalId',
           headers: headers);
-      print("delete_Ok1");
-      print('deleteMember Response: ${response.body}');
       if (200 == response.statusCode) {
         return response.body;
       } else {
