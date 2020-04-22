@@ -1,31 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'Categories.dart';
 import 'Members.dart';
 
 class Services {
-//  static const ROOT = 'http://192.168.1.10:8080/EmployeesDB/member_actions.php';
-//  static const _CREATE_TABLE_ACTION = 'CREATE_TABLE';
-//  static const _GET_ALL_ACTION = 'GET_ALL';
-//  static const _ADD_EMP_ACTION = 'ADD_EMP';
-//  static const _UPDATE_EMP_ACTION = 'UPDATE_EMP';
-//  static const _DELETE_EMP_ACTION = 'DELETE_EMP';
 
-  // Method to create the table Employees
-//  static Future<String> createTable() async {
-//    try {
-//      //add the parameters to pass to the request
-//      var map = Map<String, dynamic>();
-//      map['action'] = _CREATE_TABLE_ACTION;
-//      final response = await http.post(ROOT, body: map);
-//      print('Create table responce : ${response.body}');
-//      return response.body;
-//    }
-//    catch (e)
-//    {
-//      return "error";
-//    }
-//  }
-  static Future<List<Employee>> getEmployees() async {
+  static Future<List<Member>> getMembers() async {
     try {
       var map = Map<String, dynamic>();
       //map['action'] = _GET_ALL_ACTION;
@@ -34,30 +14,61 @@ class Services {
       final response = await http.get('http://192.168.1.110:3000/members');
       print("gg");
 
-      print('getEmployees Response: ${json.decode(response.body)[12]}');
+      print('getMembers Response: ${json.decode(response.body)[12]}');
       if (200 == response.statusCode) {
         print("gglist");
-        List<Employee> list = parseResponse(response.body);
+        List<Member> list = parseResponse(response.body);
         //print(parseResponse(response.body));
         //print ("response.body");
         return list;
       } else {
-        return List<Employee>();
+        return List<Member>();
       }
     } catch (e) {
-      return List<Employee>(); // return an empty list on exception/error
+      return List<Member>(); // return an empty list on exception/error
     }
   }
 
-  static List<Employee> parseResponse(String responseBody) {
+  static Future<List<Category>> getCategory() async {
+    try {
+      var map = Map<String, dynamic>();
+      //map['action'] = _GET_ALL_ACTION;
+      print("category ok1");
+
+      final response = await http.get('http://192.168.1.110:3000/category');
+      print("gg");
+
+      print('getCategory Response: ${json.decode(response.body)[2]}');
+      if (200 == response.statusCode) {
+        print("gglist");
+        List<Category> list = parseResponse1(response.body);
+        //print(parseResponse(response.body));
+        //print ("response.body");
+        return list;
+      } else {
+        return List<Category>();
+      }
+    } catch (e) {
+      return List<Category>(); // return an empty list on exception/error
+    }
+  }
+
+  static List<Member> parseResponse(String responseBody) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
     //print(parsed);
-    print(parsed.map<Employee>((json) => Employee.fromJson(json)).toList());
-    return parsed.map<Employee>((json) => Employee.fromJson(json)).toList();
+    print(parsed.map<Member>((json) => Member.fromJson(json)).toList());
+    return parsed.map<Member>((json) => Member.fromJson(json)).toList();
+  }
+
+  static List<Category> parseResponse1(String responseBody) {
+    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+    //print(parsed);
+    print(parsed.map<Category>((json) => Category.fromJson(json)).toList());
+    return parsed.map<Category>((json) => Category.fromJson(json)).toList();
   }
 
 // Method to add employee to the database...
-  static Future<String> addEmployee(
+  static Future<String> addMembers(
       String _nationalid,
       String _name,
       String _profession,

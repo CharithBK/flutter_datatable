@@ -5,6 +5,7 @@ import 'Member_Management.dart';
 import 'Members.dart';
 import 'Services.dart';
 import 'Login.dart';
+import 'Student_Profile.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -59,7 +60,7 @@ class _HomeState extends State<Home> {
             onTap: () {
               Fluttertoast.showToast(msg: 'Student');
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => new Login()));
+                  MaterialPageRoute(builder: (context) => new Student_Profile()));
             },
             child: ListTile(
               title: Text('Student'),

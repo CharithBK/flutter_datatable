@@ -1,4 +1,4 @@
-class Employee {
+class Member {
   String nationalID;
   String name;
   String profession;
@@ -9,7 +9,7 @@ class Employee {
   String status;
 
   // ignore: non_constant_identifier_names
-  Employee(NationalID, Name, Profession, Email, Affiliation, Type, Password, Status) {
+  Member(NationalID, Name, Profession, Email, Affiliation, Type, Password, Status) {
     //print("test1");
     // print(NationalID.toString());
     this.nationalID = NationalID.toString();
@@ -32,7 +32,7 @@ class Employee {
 //    this.Password,
 //    this.Status});
 
-  factory Employee.fromJson(Map<String, dynamic> json) {
+  factory Member.fromJson(Map<String, dynamic> json) {
     //   print(json['NationalID']);
 //    print(json['Name']);
 //    print(json['Email']);
@@ -55,7 +55,7 @@ class Employee {
 //
 //    );
 
-    return Employee(
+    return Member(
         json['NationalID'],
         json['Name'],
         json['Profession'],

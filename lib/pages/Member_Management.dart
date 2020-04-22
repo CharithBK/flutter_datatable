@@ -12,7 +12,7 @@ import 'Services.dart';
 
 // ignore: camel_case_types
 class Member_Management extends StatefulWidget {
-  final String title = "Member Management";
+  final String title = "MANAGER";
 
   @override
   _Member_ManagementState createState() => _Member_ManagementState();
@@ -34,8 +34,8 @@ class Debouncer {
 }
 
 class _Member_ManagementState extends State<Member_Management> {
-  List<Employee> _employees;
-  List<Employee> _filteremployees;
+  List<Member> _members;
+  List<Member> _filtermembers;
   GlobalKey<ScaffoldState> _scaffoldKey;
 
   // controller for the First Name TextField we are going to create.
@@ -49,7 +49,7 @@ class _Member_ManagementState extends State<Member_Management> {
   TextEditingController _type;
   TextEditingController _password;
   TextEditingController _status;
-  Employee _selectedEmployee;
+  Member _selectedMember;
   bool _isUpdating;
   String _titleProgress;
   final _debouncer = Debouncer(milliseconds: 2000);
@@ -57,8 +57,8 @@ class _Member_ManagementState extends State<Member_Management> {
   @override
   void initState() {
     super.initState();
-    _employees = [];
-    _filteremployees = [];
+    _members = [];
+    _filtermembers = [];
     _isUpdating = false;
     _titleProgress = widget.title;
     _scaffoldKey = GlobalKey(); // key to get the context to show a SnackBar
@@ -71,7 +71,7 @@ class _Member_ManagementState extends State<Member_Management> {
     _type = TextEditingController();
     _password = TextEditingController();
     _status = TextEditingController();
-    _getEmployees();
+    _getMembers();
   }
 
   // Method to update title in the AppBar Title
@@ -116,16 +116,16 @@ class _Member_ManagementState extends State<Member_Management> {
 //    });
 //  }
 
-  _getEmployees() {
+  _getMembers() {
     _showProgress('Loading Members...');
-    Services.getEmployees().then((employees) {
+    Services.getMembers().then((members) {
       setState(() {
-        _employees = employees;
+        _members = members;
 
-        _filteremployees = employees;
+        _filtermembers = members;
       });
       _showProgress(widget.title); // Reset the title...
-      print("Length ${employees.length}");
+      print("Length ${members.length}");
     });
   }
 
@@ -168,7 +168,7 @@ class _Member_ManagementState extends State<Member_Management> {
     _status.text = '';
   }
 
-  _showValues(Employee employee) {
+  _showValues(Member employee) {
     _nationalID.text = employee.nationalID;
 
     _name.text = employee.name;
@@ -257,17 +257,17 @@ class _Member_ManagementState extends State<Member_Management> {
                   )),
             ),
           ],
-          rows: _filteremployees
+          rows: _filtermembers
               .map(
-                (employee) => DataRow(cells: [
+                (member) => DataRow(cells: [
                   DataCell(
-                    Text(employee.nationalID),
+                    Text(member.nationalID),
                     // Add tap in the row and populate the
                     // textfields with the corresponding values to update
                     onTap: () {
-                      _showValues(employee);
+                      _showValues(member);
                       // Set the Selected employee to Update
-                      _selectedEmployee = employee;
+                      _selectedMember = member;
                       setState(() {
                         _isUpdating = true;
                       });
@@ -275,12 +275,12 @@ class _Member_ManagementState extends State<Member_Management> {
                   ),
                   DataCell(
                     Text(
-                      employee.name.toUpperCase(),
+                      member.name.toUpperCase(),
                     ),
                     onTap: () {
-                      _showValues(employee);
+                      _showValues(member);
                       // Set the Selected employee to Update
-                      _selectedEmployee = employee;
+                      _selectedMember = member;
                       // Set flag updating to true to indicate in Update Mode
                       setState(() {
                         _isUpdating = true;
@@ -289,12 +289,12 @@ class _Member_ManagementState extends State<Member_Management> {
                   ),
                   DataCell(
                     Text(
-                      employee.profession.toUpperCase(),
+                      member.profession.toUpperCase(),
                     ),
                     onTap: () {
-                      _showValues(employee);
+                      _showValues(member);
                       // Set the Selected employee to Update
-                      _selectedEmployee = employee;
+                      _selectedMember = member;
                       setState(() {
                         _isUpdating = true;
                       });
@@ -302,12 +302,12 @@ class _Member_ManagementState extends State<Member_Management> {
                   ),
                   DataCell(
                     Text(
-                      employee.email.toUpperCase(),
+                      member.email.toUpperCase(),
                     ),
                     onTap: () {
-                      _showValues(employee);
+                      _showValues(member);
                       // Set the Selected employee to Update
-                      _selectedEmployee = employee;
+                      _selectedMember = member;
                       setState(() {
                         _isUpdating = true;
                       });
@@ -315,12 +315,12 @@ class _Member_ManagementState extends State<Member_Management> {
                   ),
                   DataCell(
                     Text(
-                      employee.affiliation.toUpperCase(),
+                      member.affiliation.toUpperCase(),
                     ),
                     onTap: () {
-                      _showValues(employee);
+                      _showValues(member);
                       // Set the Selected employee to Update
-                      _selectedEmployee = employee;
+                      _selectedMember = member;
                       setState(() {
                         _isUpdating = true;
                       });
@@ -328,12 +328,12 @@ class _Member_ManagementState extends State<Member_Management> {
                   ),
                   DataCell(
                     Text(
-                      employee.type.toUpperCase(),
+                      member.type.toUpperCase(),
                     ),
                     onTap: () {
-                      _showValues(employee);
+                      _showValues(member);
                       // Set the Selected employee to Update
-                      _selectedEmployee = employee;
+                      _selectedMember = member;
                       setState(() {
                         _isUpdating = true;
                       });
@@ -341,12 +341,12 @@ class _Member_ManagementState extends State<Member_Management> {
                   ),
                   DataCell(
                     Text(
-                      employee.password.toUpperCase(),
+                      member.password.toUpperCase(),
                     ),
                     onTap: () {
-                      _showValues(employee);
+                      _showValues(member);
                       // Set the Selected employee to Update
-                      _selectedEmployee = employee;
+                      _selectedMember = member;
                       setState(() {
                         _isUpdating = true;
                       });
@@ -354,12 +354,12 @@ class _Member_ManagementState extends State<Member_Management> {
                   ),
                   DataCell(
                     Text(
-                      employee.status.toUpperCase(),
+                      member.status.toUpperCase(),
                     ),
                     onTap: () {
-                      _showValues(employee);
+                      _showValues(member);
                       // Set the Selected employee to Update
-                      _selectedEmployee = employee;
+                      _selectedMember = member;
                       setState(() {
                         _isUpdating = true;
                       });
@@ -393,7 +393,7 @@ class _Member_ManagementState extends State<Member_Management> {
         ),
         onChanged: (string) {
           _debouncer.run(() {
-            setState(() {_filteremployees = _employees.where((u) => (u.nationalID.toLowerCase().contains(string.toLowerCase())) || (u.name.toLowerCase().contains(string.toLowerCase()))|| (u.profession.toLowerCase().contains(string.toLowerCase()))||(u.email.toLowerCase().contains(string.toLowerCase()))||(u.affiliation.toLowerCase().contains(string.toLowerCase()))||(u.type.toLowerCase().contains(string.toLowerCase()))||(u.password.toLowerCase().contains(string.toLowerCase()))||(u.status.toLowerCase().contains(string.toLowerCase())))
+            setState(() {_filtermembers = _members.where((u) => (u.nationalID.toLowerCase().contains(string.toLowerCase())) || (u.name.toLowerCase().contains(string.toLowerCase()))|| (u.profession.toLowerCase().contains(string.toLowerCase()))||(u.email.toLowerCase().contains(string.toLowerCase()))||(u.affiliation.toLowerCase().contains(string.toLowerCase()))||(u.type.toLowerCase().contains(string.toLowerCase()))||(u.password.toLowerCase().contains(string.toLowerCase()))||(u.status.toLowerCase().contains(string.toLowerCase())))
                   .toList();
             });
           });
@@ -421,7 +421,7 @@ class _Member_ManagementState extends State<Member_Management> {
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              _getEmployees();
+              _getMembers();
             },
           )
         ],

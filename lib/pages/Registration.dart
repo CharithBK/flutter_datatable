@@ -277,7 +277,7 @@ class _RegistrationState extends State<Registration> {
   void saveMemberDetails() {
 
     statusController = false;
-    Services.addEmployee(nationalIdController.text, nameController.text,professionController.text,emailController.text,affiliationController.text,dropdownType,passwordController.text,statusController.toString())
+    Services.addMembers(nationalIdController.text, nameController.text,professionController.text,emailController.text,affiliationController.text,dropdownType,passwordController.text,statusController.toString())
         .then((result) {
       Fluttertoast.showToast(msg: 'OK DB data passed');
     });

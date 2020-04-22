@@ -76,11 +76,11 @@ class _Manager_ProfileState extends State<Manager_Profile> {
                     enabled: false,
                     controller: nationalIdController,
                     decoration:
-                        InputDecoration(labelText: 'User ID ', hintText: 'Id'),
+                        InputDecoration(labelText: 'National Identity Card ', hintText: 'nic'),
                     // ignore: missing_return
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'User Id Empty';
+                        return 'NIC Is Empty *';
                       }
                     },
                   ),
