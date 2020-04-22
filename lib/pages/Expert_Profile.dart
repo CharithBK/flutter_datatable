@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutterdatatable/pages/Home.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'Login.dart';
 import 'Member_Management.dart';
+import 'Members.dart';
+import 'Services.dart';
 import 'Student_Management.dart';
 
 class Expert_Profile extends StatefulWidget {
@@ -13,6 +17,8 @@ class Expert_Profile extends StatefulWidget {
 
 class _Expert_ProfileState extends State<Expert_Profile> {
   bool _isEnabled = false;
+  bool _isUpdating;
+  Member _Member;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController nationalIdController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -21,6 +27,22 @@ class _Expert_ProfileState extends State<Expert_Profile> {
   TextEditingController affiliationController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController cpasswordController = TextEditingController();
+
+  _updateMember(Member member) {
+    setState(() {
+      _isUpdating = true;
+    });
+
+    Services.updateMember(nationalIdController.text, nameController.text, professionController.text,emailController.text, affiliationController.text, passwordController.text)
+        .then((result) {
+      final msg = json.decode(result)["message"];
+      if ('Member was updated successfully!' == msg) {
+        setState(() {
+          _isUpdating = false;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +96,7 @@ class _Expert_ProfileState extends State<Expert_Profile> {
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: TextFormField(
-                    enabled: false,
+                    enabled: _isEnabled,
                     controller: nationalIdController,
                     decoration:
                     InputDecoration(labelText: 'National Identity Card ', hintText: 'nic'),
@@ -196,9 +218,13 @@ class _Expert_ProfileState extends State<Expert_Profile> {
                       child: new MaterialButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            print("Save");
-                            SaveUserDattails();
-                            Fluttertoast.showToast(msg: 'Details Saved');
+                            if(passwordController.text == cpasswordController.text) {
+                              Fluttertoast.showToast(msg: 'Update Successfully');
+                              _updateMember(_Member);
+                            }
+                            else{
+                              Fluttertoast.showToast(msg: 'Password Not Matched');
+                            }
                           }
                         },
                         child: new Text(
@@ -244,5 +270,4 @@ class _Expert_ProfileState extends State<Expert_Profile> {
     );
   }
 
-  void SaveUserDattails() {}
 }

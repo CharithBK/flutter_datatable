@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutterdatatable/pages/Home.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'Add_Category.dart';
 import 'Login.dart';
+import 'Members.dart';
+import 'Services.dart';
 
 // ignore: camel_case_types
 class Student_Profile extends StatefulWidget {
@@ -13,6 +17,8 @@ class Student_Profile extends StatefulWidget {
 
 class _Student_ProfileState extends State<Student_Profile> {
   bool _isEnabled = false;
+  bool _isUpdating;
+  Member _Member;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController nationalIdController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -21,6 +27,22 @@ class _Student_ProfileState extends State<Student_Profile> {
   TextEditingController affiliationController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController cpasswordController = TextEditingController();
+
+  _updateMember(Member member) {
+    setState(() {
+      _isUpdating = true;
+    });
+
+    Services.updateMember(nationalIdController.text, nameController.text, professionController.text,emailController.text, affiliationController.text, passwordController.text)
+        .then((result) {
+      final msg = json.decode(result)["message"];
+      if ('Member was updated successfully!' == msg) {
+        setState(() {
+          _isUpdating = false;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +96,7 @@ class _Student_ProfileState extends State<Student_Profile> {
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: TextFormField(
-                    enabled: false,
+                    enabled: _isEnabled,
                     controller: nationalIdController,
                     decoration:
                         InputDecoration(labelText: 'National Identity Card ', hintText: 'nic'),
@@ -197,9 +219,13 @@ class _Student_ProfileState extends State<Student_Profile> {
                       child: new MaterialButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            print("Save");
-                            SaveUserDattails();
-                            Fluttertoast.showToast(msg: 'Details Saved');
+                            if(passwordController.text == cpasswordController.text) {
+                              Fluttertoast.showToast(msg: 'Update Successfully');
+                              _updateMember(_Member);
+                            }
+                            else{
+                              Fluttertoast.showToast(msg: 'Password Not Matched');
+                            }
                           }
                         },
                         child: new Text(
@@ -245,5 +271,5 @@ class _Student_ProfileState extends State<Student_Profile> {
     );
   }
 
-  void SaveUserDattails() {}
+
 }

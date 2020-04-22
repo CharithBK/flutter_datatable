@@ -122,7 +122,6 @@ class _Member_ManagementState extends State<Member_Management> {
     Services.getMembers().then((members) {
       setState(() {
         _members = members;
-
         _filtermembers = members;
       });
       _showProgress(widget.title); // Reset the title...

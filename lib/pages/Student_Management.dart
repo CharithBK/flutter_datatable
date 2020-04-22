@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:core';
 
-
 import 'package:flutter/material.dart';
 import 'package:flutterdatatable/pages/Students.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,7 +8,6 @@ import 'Add_Category.dart';
 import 'Categories.dart';
 import 'Expert_Profile.dart';
 import 'Services.dart';
-
 
 // ignore: camel_case_types
 class Student_Management extends StatefulWidget {
@@ -177,7 +175,6 @@ class _Student_ManagementState extends State<Student_Management> {
     _nationalID.text = student.affiliation;
     _name.text = student.qualifications_Languages;
     _profession.text = student.qualifications_IDEs;
-
   }
 
   // Let's create a DataTable and show the employee list in it.
@@ -189,9 +186,7 @@ class _Student_ManagementState extends State<Student_Management> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
-
           columns: [
-
             DataColumn(
               label: Text('Category ',
                   style: TextStyle(
@@ -250,70 +245,63 @@ class _Student_ManagementState extends State<Student_Management> {
                     fontSize: 16.0,
                   )),
             ),
-            DataColumn(
-              label: Text('Delete',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16.0,
-                  )),
-            ),
           ],
           rows: _filterstudents
               .map(
                 (student) => DataRow(cells: [
-              DataCell(
-                Text(student.category),
-                // Add tap in the row and populate the
-                // textfields with the corresponding values to update
-                onTap: () {
-                  _showValues(student);
-                  // Set the Selected employee to Update
-                  _selectedStudent = student;
-                  setState(() {
-                    _isUpdating = true;
-                  });
-                },
-              ),
-              DataCell(
-                Text(
-                  student.nationalID.toUpperCase(),
-                ),
-                onTap: () {
-                  _showValues(student);
-                  // Set the Selected employee to Update
-                  _selectedStudent = student;
-                  // Set flag updating to true to indicate in Update Mode
-                  setState(() {
-                    _isUpdating = true;
-                  });
-                },
-              ),
-              DataCell(
-                Text(
-                  student.name.toUpperCase(),
-                ),
-                onTap: () {
-                  _showValues(student);
-                  // Set the Selected employee to Update
-                  _selectedStudent = student;
-                  setState(() {
-                    _isUpdating = true;
-                  });
-                },
-              ),
-              DataCell(
-                Text(
-                  student.profession.toUpperCase(),
-                ),
-                onTap: () {
-                  _showValues(student);
-                  // Set the Selected employee to Update
-                  _selectedStudent = student;
-                  setState(() {
-                    _isUpdating = true;
-                  });
-                },
-              ),
+                  DataCell(
+                    Text(student.category),
+                    // Add tap in the row and populate the
+                    // textfields with the corresponding values to update
+                    onTap: () {
+                      _showValues(student);
+                      // Set the Selected employee to Update
+                      _selectedStudent = student;
+                      setState(() {
+                        _isUpdating = true;
+                      });
+                    },
+                  ),
+                  DataCell(
+                    Text(
+                      student.nationalID.toUpperCase(),
+                    ),
+                    onTap: () {
+                      _showValues(student);
+                      // Set the Selected employee to Update
+                      _selectedStudent = student;
+                      // Set flag updating to true to indicate in Update Mode
+                      setState(() {
+                        _isUpdating = true;
+                      });
+                    },
+                  ),
+                  DataCell(
+                    Text(
+                      student.name.toUpperCase(),
+                    ),
+                    onTap: () {
+                      _showValues(student);
+                      // Set the Selected employee to Update
+                      _selectedStudent = student;
+                      setState(() {
+                        _isUpdating = true;
+                      });
+                    },
+                  ),
+                  DataCell(
+                    Text(
+                      student.profession.toUpperCase(),
+                    ),
+                    onTap: () {
+                      _showValues(student);
+                      // Set the Selected employee to Update
+                      _selectedStudent = student;
+                      setState(() {
+                        _isUpdating = true;
+                      });
+                    },
+                  ),
                   DataCell(
                     Text(student.email.toUpperCase()),
                     // Add tap in the row and populate the
@@ -367,17 +355,8 @@ class _Student_ManagementState extends State<Student_Management> {
                       });
                     },
                   ),
-              DataCell(IconButton(
-                icon: Icon(Icons.delete,
-                  color: Colors.red,
-                ),
-
-                onPressed: () {
-                  //_deleteEmployee(employee);
-                },
-              ))
-            ]),
-          )
+                ]),
+              )
               .toList(),
         ),
       ),
@@ -395,8 +374,11 @@ class _Student_ManagementState extends State<Student_Management> {
         ),
         onChanged: (string) {
           _debouncer.run(() {
-            setState(() {_filterstudents = _students.where((u) => (u.category.toLowerCase().contains(string.toLowerCase())))
-                .toList();
+            setState(() {
+              _filterstudents = _students
+                  .where((u) =>
+                      (u.category.toLowerCase().contains(string.toLowerCase())))
+                  .toList();
             });
           });
         },
@@ -419,8 +401,10 @@ class _Student_ManagementState extends State<Student_Management> {
               ),
               onPressed: () {
                 Fluttertoast.showToast(msg: 'Expert Profile');
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => new Expert_Profile()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => new Expert_Profile()));
               }),
           IconButton(
             icon: Icon(Icons.refresh),

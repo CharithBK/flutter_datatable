@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutterdatatable/pages/Home.dart';
+import 'package:flutterdatatable/pages/Members.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'Login.dart';
 import 'Member_Management.dart';
+import 'Services.dart';
 
 class Manager_Profile extends StatefulWidget {
   @override
@@ -12,6 +16,7 @@ class Manager_Profile extends StatefulWidget {
 
 class _Manager_ProfileState extends State<Manager_Profile> {
   bool _isEnabled = false;
+
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController nationalIdController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -20,6 +25,24 @@ class _Manager_ProfileState extends State<Manager_Profile> {
   TextEditingController affiliationController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController cpasswordController = TextEditingController();
+  Member _Member;
+  bool _isUpdating;
+
+  _updateMember(Member member) {
+    setState(() {
+      _isUpdating = true;
+    });
+
+    Services.updateMember(nationalIdController.text, nameController.text, professionController.text,emailController.text, affiliationController.text, passwordController.text)
+        .then((result) {
+      final msg = json.decode(result)["message"];
+      if ('Member was updated successfully!' == msg) {
+               setState(() {
+          _isUpdating = false;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +96,7 @@ class _Manager_ProfileState extends State<Manager_Profile> {
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: TextFormField(
-                    enabled: false,
+                    enabled: _isEnabled,
                     controller: nationalIdController,
                     decoration:
                         InputDecoration(labelText: 'National Identity Card ', hintText: 'nic'),
@@ -195,9 +218,15 @@ class _Manager_ProfileState extends State<Manager_Profile> {
                       child: new MaterialButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            print("Save");
-                            SaveUserDattails();
-                            Fluttertoast.showToast(msg: 'Details Saved');
+                            if(passwordController.text == cpasswordController.text) {
+                              Fluttertoast.showToast(msg: 'Update Successfully');
+                              _updateMember(_Member);
+                            }
+                            else{
+                              Fluttertoast.showToast(msg: 'Password Not Matched');
+                            }
+
+
                           }
                         },
                         child: new Text(
@@ -243,5 +272,4 @@ class _Manager_ProfileState extends State<Manager_Profile> {
     );
   }
 
-  void SaveUserDattails() {}
 }

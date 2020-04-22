@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutterdatatable/pages/Registration.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'Members.dart';
+import 'Services.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -9,11 +14,19 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  List<Member> _members;
 
   //===============================================================================================================================
 
   TextEditingController user = new TextEditingController();
   TextEditingController pass = new TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _members = [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +38,7 @@ class _LoginState extends State<Login> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "UserName",
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final passwordField = TextField(
       controller: pass,
@@ -35,7 +48,7 @@ class _LoginState extends State<Login> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Password",
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
 
     final loginButon = Material(
@@ -46,7 +59,7 @@ class _LoginState extends State<Login> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-         // login();
+          login();
         },
         child: Text("Login",
             textAlign: TextAlign.center,
@@ -86,15 +99,12 @@ class _LoginState extends State<Login> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text ("Student Industry Portal System" ,
+                  Text("Student Industry Portal System",
                       style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 23.5,
-
-                        fontWeight: FontWeight.bold
-
-                      )),
-                  SizedBox(height:85.0),
+                          color: Colors.black,
+                          fontSize: 23.5,
+                          fontWeight: FontWeight.bold)),
+                  SizedBox(height: 85.0),
                   username,
                   SizedBox(height: 25.0),
                   passwordField,
@@ -110,5 +120,18 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  void login() {
+    if (user.text != null) {
+      Fluttertoast.showToast(msg: 'Username or Password Invalid');
+      if (pass.text != null) {
+
+      } else {
+        Fluttertoast.showToast(msg: 'Password Name Is Empty');
+      }
+    } else {
+      Fluttertoast.showToast(msg: 'User Name Is Empty');
+    }
   }
 }

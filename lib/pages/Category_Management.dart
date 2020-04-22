@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
 
 
@@ -122,32 +123,37 @@ class _Category_ManagementState extends State<Category_Management> {
     });
   }
 
-//  _updateEmployee(Employee employee) {
-//    setState(() {
-//      _isUpdating = true;
-//    });
-//    _showProgress('Updating Employee...');
-//    Services.updateEmployee(
-//        employee.id, _firstNameController.text, _lastNameController.text)
-//        .then((result) {
-//      if ('success' == result) {
-//        _getEmployees(); // Refresh the list after update
-//        setState(() {
-//          _isUpdating = false;
-//        });
-//        _clearValues();
-//      }
-//    });
-//  }
-//
-//  _deleteEmployee(Employee employee) {
-//    _showProgress('Deleting Employee...');
-//    Services.deleteEmployee(employee.id).then((result) {
-//      if ('success' == result) {
-//        _getEmployees(); // Refresh after delete...
-//      }
-//    });
-//  }
+  _updateCategory(Category category) {
+    setState(() {
+      _isUpdating = true;
+    });
+    _showProgress('Updating Category...');
+    Services.updateCategory(category.categoryID, _categoryName.text, _proLanguages.text,_proIDEs.text)
+        .then((result) {
+      final msg = json.decode(result)["message"];
+      if ('Category was updated successfully!' == msg) {
+        Fluttertoast.showToast(msg: 'Update Successfully');
+        _getCategory(); // Refresh the list after update
+        setState(() {
+          _isUpdating = false;
+        });
+        _clearValues();
+      }
+    });
+  }
+
+  _deleteCategory(Category category) {
+    _showProgress('Deleting Category...');
+    Services.deleteCategory(category.categoryID).then((result) {
+      print("delete done");
+      final msg = json.decode(result)["message"];
+      print(msg);
+      if ('Category was deleted successfully!' == msg) {
+        _getCategory(); // Refresh after delete...
+      }
+      print("delete done2");
+    });
+  }
 
   // Method to clear TextField values
   _clearValues() {
@@ -278,7 +284,8 @@ class _Category_ManagementState extends State<Category_Management> {
                 ),
 
                 onPressed: () {
-                  //_deleteEmployee(employee);
+                  Fluttertoast.showToast(msg: 'Category Deleted');
+                  _deleteCategory(category);
                 },
               ))
             ]),
@@ -379,7 +386,7 @@ class _Category_ManagementState extends State<Category_Management> {
                     child: Text('UPDATE'),
                     color: Colors.green,
                     onPressed: () {
-                      // _updateEmployee(_selectedEmployee);
+                      _updateCategory(_selectedCategory);
                     },
                   ),  SizedBox(width: 10.0),
                   MaterialButton(

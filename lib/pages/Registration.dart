@@ -12,7 +12,8 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
-  bool statusController ;
+  bool statusController;
+
   String dropdownType;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController nationalIdController = TextEditingController();
@@ -21,9 +22,7 @@ class _RegistrationState extends State<Registration> {
   TextEditingController emailController = TextEditingController();
   TextEditingController affiliationController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
   TextEditingController cpasswordController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +43,8 @@ class _RegistrationState extends State<Registration> {
                 color: Colors.white,
               ),
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => new Login()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => new Login()));
               }),
           new IconButton(
               icon: Icon(
@@ -53,17 +52,8 @@ class _RegistrationState extends State<Registration> {
                 color: Colors.white,
               ),
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => new Home()));
-              }),
-          new IconButton(
-              icon: Icon(
-                Icons.arrow_drop_down,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => new Login()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => new Home()));
               }),
         ],
       ),
@@ -85,8 +75,8 @@ class _RegistrationState extends State<Registration> {
                   padding: const EdgeInsets.all(12.0),
                   child: TextFormField(
                     controller: nationalIdController,
-                    decoration:
-                        InputDecoration(labelText: 'National ID ', hintText: 'Id'),
+                    decoration: InputDecoration(
+                        labelText: 'National ID ', hintText: 'Id'),
                     // ignore: missing_return
                     validator: (value) {
                       if (value.isEmpty) {
@@ -133,8 +123,8 @@ class _RegistrationState extends State<Registration> {
                   child: TextFormField(
                     controller: emailController,
 
-                    decoration: InputDecoration(
-                        labelText: 'Email ', hintText: 'email'),
+                    decoration:
+                        InputDecoration(labelText: 'Email ', hintText: 'email'),
                     // ignore: missing_return
                     validator: (value) {
                       if (value.isEmpty) {
@@ -183,7 +173,8 @@ class _RegistrationState extends State<Registration> {
                     obscureText: true,
                     controller: cpasswordController,
                     decoration: InputDecoration(
-                        labelText: 'Confirm Password ', hintText: 'confirm password'),
+                        labelText: 'Confirm Password ',
+                        hintText: 'confirm password'),
                     // ignore: missing_return
                     validator: (value) {
                       if (value.isEmpty) {
@@ -193,7 +184,6 @@ class _RegistrationState extends State<Registration> {
                   ),
                 ),
                 SizedBox(height: 5.0),
-
                 SizedBox(height: 10.0),
                 new Row(
                   children: <Widget>[
@@ -214,12 +204,11 @@ class _RegistrationState extends State<Registration> {
                         color: Colors.lightGreen,
                       ),
                       onChanged: (String newValue) {
-
-                          setState(() {
-                            dropdownType = newValue;
-                            print(dropdownType);
-                            //print(dropdownBrands);
-                          });
+                        setState(() {
+                          dropdownType = newValue;
+                          print(dropdownType);
+                          //print(dropdownBrands);
+                        });
 
                         return dropdownType;
                       },
@@ -248,22 +237,31 @@ class _RegistrationState extends State<Registration> {
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             if (dropdownType != null) {
-                              print("Save");
-                              saveMemberDetails();
-                              Fluttertoast.showToast(msg: 'Details Saved');
+                              if (passwordController.text ==
+                                  cpasswordController.text) {
+                                saveMemberDetails();
+                                Fluttertoast.showToast(
+                                    msg: 'Member Registered');
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => new Login()));
+                              } else {
+                                Fluttertoast.showToast(
+                                    msg: 'Password Not Matched!');
+                              }
                             } else {
                               Fluttertoast.showToast(msg: 'Select the type');
                             }
                           }
                         },
                         child: new Text(
-                          "Save",
+                          "Register",
                           style: TextStyle(color: Colors.white),
                         ),
-                        color: Colors.red,
+                        color: Colors.green,
                       ),
                     ),
-
                   ],
                 ),
               ],
@@ -275,9 +273,16 @@ class _RegistrationState extends State<Registration> {
   }
 
   void saveMemberDetails() {
-
     statusController = false;
-    Services.addMembers(nationalIdController.text, nameController.text,professionController.text,emailController.text,affiliationController.text,dropdownType,passwordController.text,statusController.toString())
+    Services.addMembers(
+            nationalIdController.text,
+            nameController.text,
+            professionController.text,
+            emailController.text,
+            affiliationController.text,
+            dropdownType,
+            passwordController.text,
+            statusController.toString())
         .then((result) {
       Fluttertoast.showToast(msg: 'OK DB data passed');
     });
